@@ -1,6 +1,6 @@
 {
   "name": "Triage Bot",
-  "description": "A triage bot example for Slack",
+  "description": "A triage bot for Slack",
   "keywords": [
     "triage",
     "slack",
@@ -10,6 +10,10 @@
   "env": {
     "TOKEN": {
       "description": "A Slack token with at least the channels:write scope",
+      "value": ""
+    },
+    "PORT": {
+      "description": "Specify the port to run the web server",
       "value": ""
     }
   }

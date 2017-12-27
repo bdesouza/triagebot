@@ -7,7 +7,7 @@
   
   "pending": {
     "title": "There are `{{count}}` request(s) pending in {{channel}}:",
-    "emojis": [ "red_circle", "large_blue_circle", "white_circle" ]
+    "emojis": [ "red_circle", "large_blue_circle", "blue_circle", "white_circle" ]
   },
 
   "review": {
