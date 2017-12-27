@@ -1,7 +1,7 @@
 {
-  "name": "triagebot-example",
+  "name": "triagebot",
   "version": "1.0.0",
-  "description": "A triage bot example for Slack",
+  "description": "A triage bot for Slack",
   "author": "John Agan <jagan@slack-corp.com>",
   "main": "triage.js",
   "license": "MIT",
