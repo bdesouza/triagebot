@@ -24,20 +24,31 @@ function create(payload, messages, options) {
 
 
 /**
- * Get triage request details from a Slack message
+ * Get triage request details from a Slack message and the associated reactions.
  *
  * @param {Object} settings - The triage report settings
  * @param {Object} message - A Slack message
  * @returns {Object} A triage object
  */
 function getRequest(settings, message) {
+  //reactions
+  let reactions = (message.reactions || []).map(r => r.name);
+
   // the emoji that was matched
   let test = new RegExp(settings.pending.emojis.join('|'));
   let match = message.text.match(test);
+  let reaction_match = settings.pending.emojis.some(e => reactions.includes(e));
   let emoji = match ? match[0] : null;
 
+  // if there is a reaction, look at it
+  if (reaction_match) {
+    let a = new Set(settings.pending.emojis);
+    let b = new Set(reactions);
+    let intersection = new Set([...a].filter(x => b.has(x)));
+    emoji = [...intersection][0];
+  }
+
   // flags based on reactions
-  let reactions = (message.reactions || []).map(r => r.name);
   let addressed = settings.addressed.emojis.some(e => reactions.includes(e));
   let review = settings.review.emojis.some(e => reactions.includes(e)) && !addressed; 
   let pending = emoji && !review && !addressed;
