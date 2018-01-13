@@ -99,16 +99,38 @@ function buildSection(settings, requests, payload, name) {
   let {channel_id, channel_name, team_domain} = payload;
   let baseUrl = `https://${team_domain}.slack.com/archives/${channel_name}/p`;
 
-  let {title} = settings[name];                                     // section title
-  let filtered = requests.filter(r => r[name]);                     // filtered list of requests
-  let items = filtered.map(r => `:${r.emoji}: ${baseUrl + r.id}`);  // section line item
-  let text = [title].concat(items).join('\n');                      // combined text
+  let {title} = settings[name];                                                                           // section title
+  let filtered = requests.filter(r => r[name]);                                                           // filtered list of requests
+  let items = filtered.map(r => `:${r.emoji}: ${baseUrl + r.id} ${buildAttributeString(settings,r)}`);    // section line item
+  let text = [title].concat(items).join('\n');                                                            // combined text
 
   // replace template fields
   text = text.replace(/{{count}}/g, filtered.length);
   text = text.replace(/{{channel}}/g, `<#${channel_id}|${channel_name}>`);
 
   return text;
+}
+
+/**
+ * Build attributor for a section
+ *
+ * @param {Object} request - The request
+ */
+function buildAttributeString(settings,request) {
+  if(settings.display_user_attributes.includes('pending') && request.pending) {
+    return `<@${request.message.user}>`
+  }
+
+  if(settings.display_user_attributes.includes('addressed') && request.addressed) {
+    return `<@${request.message.user}>`
+  }
+
+  if(settings.display_user_attributes.includes('review') && request.review) {
+    let users = request.message.reactions.filter(r => (r.name === settings.review.emojis[0])).map(u => u.users);
+    return `(:${settings.review.emojis[0]}: <@${users[0]}>)`
+  }
+
+  return '';
 }
 
 

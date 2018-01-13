@@ -3,20 +3,22 @@
 
   "publish_text": "publish",
 
-  "display": [ "pending", "review" ],
+  "display": [ "pending", "review", "addressed"],
+
+  "display_user_attributes": ["review"],
   
   "pending": {
-    "title": "There are `{{count}}` request(s) pending in {{channel}}:",
+    "title": "*There are `{{count}}` request(s) that are pending :hourglass: in {{channel}}:*",
     "emojis": [ "red_circle", "large_blue_circle", "blue_circle", "white_circle" ]
   },
 
   "review": {
-    "title": "There are `{{count}}` request(s) being looked :eyes: at in {{channel}}:",
+    "title": "*There are `{{count}}` request(s) being looked :eyes: at in {{channel}}:*",
     "emojis": [ "eyes" ]
   },
 
   "addressed": {
-    "title": "There are `{{count}}` request(s) addressed in {{channel}}:",
+    "title": "*There are `{{count}}` request(s) that have been :white_check_mark:  in {{channel}}:*",
     "emojis": [ "white_check_mark" ]
   },
 
