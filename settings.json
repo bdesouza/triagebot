@@ -9,17 +9,25 @@
   
   "pending": {
     "title": "*There are `{{count}}` request(s) that are pending :hourglass: in {{channel}}:*",
-    "emojis": [ "red_circle", "large_blue_circle", "blue_circle", "white_circle" ]
+    "emojis": [
+      "red_circle",
+      "triage_priority_urgent",
+      "large_blue_circle",
+      "blue_circle",
+      "triage_priority_high_priority",
+      "white_circle",
+      "triage_priority_low_priority"
+    ]
   },
 
   "review": {
     "title": "*There are `{{count}}` request(s) being looked :eyes: at in {{channel}}:*",
-    "emojis": [ "eyes" ]
+    "emojis": [ "eyes", "triage_status_investigating" ]
   },
 
   "addressed": {
     "title": "*There are `{{count}}` request(s) that have been :white_check_mark:  in {{channel}}:*",
-    "emojis": [ "white_check_mark" ]
+    "emojis": [ "white_check_mark", "triage_status_resolved" ]
   },
 
   "help": [
