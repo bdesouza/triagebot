@@ -126,7 +126,7 @@ function buildAttributeString(settings,request) {
   }
 
   if(settings.display_user_attributes.includes('review') && request.review) {
-    let users = request.message.reactions.filter(r => (r.name === settings.review.emojis[0])).map(u => u.users);
+    let users = request.message.reactions.filter(r => (settings.review.emojis.includes(r.name))).map(u => u.users);
     return `(:${settings.review.emojis[0]}: <@${users[0]}>)`
   }
 
