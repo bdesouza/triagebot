@@ -14,7 +14,7 @@ function create(payload, messages, options) {
 
   let map = getRequest.bind(null, settings);
   let sort = (a, b) => a.priority - b.priority;
-  let filter = m => m.emoji && !m.bot;
+  let filter = m => m.emoji && !m.bot && !m.message.bot_id && (m.message.subtype && m.message.subtype.includes("reminder") ? !1 : !0);
 
   let requests = messages.map(map).filter(filter).sort(sort);
   let message = buildMessage(payload, requests, settings);
