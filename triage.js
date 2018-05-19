@@ -34,18 +34,26 @@ function getRequest(settings, message) {
   //reactions
   let reactions = (message.reactions || []).map(r => r.name);
 
-  // the emoji that was matched
-  let test = new RegExp(settings.pending.emojis.join('|'));
-  let match = message.text.match(test);
-  let reaction_match = settings.pending.emojis.some(e => reactions.includes(e));
-  let emoji = match ? match[0] : null;
+  // determine priority and emoji
+  let pending_emoji_list = Array.prototype.concat(settings.pending.emojis.urgent, settings.pending.emojis.high, settings.pending.emojis.low);
+
+  let urgent_test = new RegExp(settings.pending.emojis.urgent.join('|'));
+  let high_test = new RegExp(settings.pending.emojis.high.join('|'));
+  let low_test = new RegExp(settings.pending.emojis.low.join('|'));
+
+  let emoji = message.text.match(urgent_test) ? settings.pending.emojis.urgent[0] :
+      (message.text.match(high_test) ? settings.pending.emojis.high[0] :
+          (message.text.match(low_test) ? settings.pending.emojis.low[0] : null));
+
+
+  let reaction_match = pending_emoji_list.some(e => reactions.includes(e));
 
   // if there is a reaction, look at it
   if (reaction_match) {
-    let a = new Set(settings.pending.emojis);
-    let b = new Set(reactions);
-    let intersection = new Set([...a].filter(x => b.has(x)));
-    emoji = [...intersection][0];
+    let reaction_text = reactions.join('|');
+    emoji = reaction_text.match(urgent_test) ? settings.pending.emojis.urgent[0] :
+        (reaction_text.match(high_test) ? settings.pending.emojis.high[0] :
+            (reaction_text.match(low_test) ? settings.pending.emojis.low[0] : null));
   }
 
   // flags based on reactions
@@ -53,9 +61,9 @@ function getRequest(settings, message) {
   let review = settings.review.emojis.some(e => reactions.includes(e)) && !addressed; 
   let pending = emoji && !review && !addressed;
 
-  let id = message.ts.replace('.', '');                       // deep link id
-  let bot = message.subtype === 'bot_message';                // bot posts
-  let priority = settings.pending.emojis.indexOf(emoji);      // display order
+  let id = message.ts.replace('.', '');                                 // deep link id
+  let bot = message.subtype === 'bot_message';                          // bot posts
+  let priority = pending_emoji_list.indexOf(emoji);                     // display order
 
   return { bot, priority, emoji, review, addressed, pending, id, message };
 }
@@ -72,7 +80,16 @@ function getRequest(settings, message) {
 function buildMessage(payload, requests, settings) {
   let {channel_id, channel_name} = payload;
   let message = { unfurl_links: settings.unfurl_links };
+
   let publish_test = new RegExp(settings.publish_text, 'i');
+  let list_test = new RegExp(settings.publish_text, 'i');
+  let help_test  = new RegExp(settings.help_text, 'i');
+
+  // create help text and return
+  if (help_test.test(payload.text)) {
+    message.attachments = settings.help;
+    return message;
+  }
 
   // build display text
   let map = buildSection.bind(null, settings, requests, payload);
@@ -80,7 +97,7 @@ function buildMessage(payload, requests, settings) {
 
   // attach instructions if not publish else make public
   if (publish_test.test(payload.text)) message.response_type = 'in_channel';
-  else message.attachments = settings.help;
+  else message.attachments = settings.list;
     
   return message;
 }

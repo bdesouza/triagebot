@@ -3,21 +3,21 @@
 
   "publish_text": "publish",
 
+  "help_text" : "help",
+
+  "list_text" : "list",
+
   "display": [ "pending", "review", "addressed"],
 
   "display_user_attributes": ["review"],
   
   "pending": {
     "title": "*There are `{{count}}` request(s) that are pending :hourglass: in {{channel}}:*",
-    "emojis": [
-      "red_circle",
-      "triage_priority_urgent",
-      "large_blue_circle",
-      "blue_circle",
-      "triage_priority_high_priority",
-      "white_circle",
-      "triage_priority_low_priority"
-    ]
+    "emojis": {
+      "urgent": [ "red_circle", "triage_priority_urgent"],
+      "high": [ "large_blue_circle", "blue_circle", "triage_priority_high_priority"],
+      "low": [ "white_circle", "triage_priority_low_priority" ]
+    }
   },
 
   "review": {
@@ -30,6 +30,17 @@
     "emojis": [ "white_check_mark", "triage_status_resolved" ]
   },
 
+  "list": [
+    {
+      "color": "#fff",
+      "text": "\n"
+    },
+    {
+      "mrkdwn_in": [ "text", "pretext" ],
+      "pretext": "To publish this to the channel type `/triage publish`."
+    }
+  ],
+
   "help": [
     {
       "color": "#fff",
@@ -38,11 +49,11 @@
     {
       "mrkdwn_in": [ "text", "pretext" ],
       "pretext": "Here's how the *Triage Bot* works:",
-      "text": "I look at messages posted in here since yesterday.\nI only care about messages or reactions that have :red_circle:, :large_blue_circle:, or :white_circle:.\nIf a messages has :eyes: reaction, it's in progress. \nIf it has a :white_check_mark:, it's done. Otherwise, it's still pending.\n"
+      "text": "I look at all messages posted in here since yesterday.\nI only care about messages or reactions that have :red_circle:, :large_blue_circle:, or :white_circle:.\nIf a messages has :eyes: reaction, it's in progress. \nIf it has a :white_check_mark:, it's done. Otherwise, it's still pending.\n"
     },
     {
       "mrkdwn_in": [ "text", "pretext" ],
-      "pretext": "To publish this to the channel type `/triage publish`."
+      "pretext": "If you'd like to see all outstanding issues simply type `/triage list`. If instead you want to share the state with everyone in the channel, type `/triage publish`."
     }
   ]
 }
