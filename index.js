@@ -29,7 +29,7 @@ function handleCommand(payload) {
 
   // load channel history
   let ts = Math.round(new Date().getTime() / 1000);
-  let tsYesterday = ts - (24 * 3600);
+  let tsYesterday = ts - (36 * 3600);
   let params = qs.stringify({ count: 1000, token: TOKEN, channel: channel_id, oldest: tsYesterday });
   let getHistory = axios.post('https://slack.com/api/channels.history', params);
 
