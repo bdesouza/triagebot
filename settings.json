@@ -22,7 +22,7 @@
 
   "review": {
     "title": "*There are `{{count}}` request(s) being looked :eyes: at in {{channel}}:*",
-    "emojis": [ "eyes", "triage_status_investigating" ]
+    "emojis": [ "eyes", "triage_status_investigating", "looking" ]
   },
 
   "addressed": {
